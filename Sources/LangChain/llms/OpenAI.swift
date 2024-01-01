@@ -10,6 +10,9 @@ import NIOPosix
 import AsyncHTTPClient
 import OpenAIKit
 
+enum OpenAIError: Error {
+    case noApiKey
+}
 
 public class OpenAI: LLM {
     
@@ -65,49 +68,3 @@ public class OpenAI: LLM {
         return LLMResult(llm_output: completion.choices.first!.message.content)
     }
 }
-
-//enum OpenAIError: Error {
-//    case noApiKey
-//}
-
-//public class OpenAI: LLM {
-//    
-//    let temperature: Double
-//    let model: ModelID
-//    
-//    let apiKey: String?
-//    var baseUrl: String?
-//    
-//    public init(apiKey: String? = nil, baseUrl: String? = nil, temperature: Double = 0.0, model: ModelID = Model.GPT3.gpt3_5Turbo16K, callbacks: [BaseCallbackHandler] = [], cache: BaseCache? = nil) {
-//        self.temperature = temperature
-//        self.model = model
-//        self.apiKey = apiKey
-//        self.baseUrl = baseUrl
-//        super.init(callbacks: callbacks, cache: cache)
-//    }
-//    
-//    public override func _send(text: String, stops: [String] = []) async throws -> LLMResult {
-//        
-//        let env = Env.loadEnv()
-//        
-//        if let apiKey = apiKey ?? env["OPENAI_API_KEY"] {
-//            let baseUrl = baseUrl ?? (env["OPENAI_API_BASE"] ?? "api.openai.com")
-//            let eventLoopGroup = ThreadManager.thread
-//
-//            let httpClient = HTTPClient(eventLoopGroupProvider: .shared(eventLoopGroup))
-//            defer {
-//                // it's important to shutdown the httpClient after all requests are done, even if one failed. See: https://github.com/swift-server/async-http-client
-//                try? httpClient.syncShutdown()
-//            }
-//            let configuration = Configuration(apiKey: apiKey, api: API(scheme: .https, host: baseUrl))
-//
-//            let openAIClient = OpenAIKit.Client(httpClient: httpClient, configuration: configuration)
-//            
-//            let completion = try await openAIClient.chats.create(model: model, messages: [.user(content: text)], temperature: temperature, stops: stops)
-//            return LLMResult(llm_output: completion.choices.first!.message.content)
-//        } else {
-//            print("Please set openai api key.")
-//            throw OpenAIError.noApiKey
-//        }
-//    }
-//}
