@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class LLM {
+open class LLM {
     static let LLM_REQ_ID_KEY = "llm_req_id"
     static let LLM_COST_KEY = "cost"
     public init(callbacks: [BaseCallbackHandler] = [], cache: BaseCache? = nil) {
@@ -22,7 +22,7 @@ public class LLM {
     let callbacks: [BaseCallbackHandler]
     let cache: BaseCache?
     
-    public func generate(text: String, stops: [String] = []) async -> LLMResult? {
+    open func generate(text: String, stops: [String] = []) async throws -> LLMResult? {
         let reqId = UUID().uuidString
         var cost = 0.0
         let now = Date.now.timeIntervalSince1970
@@ -49,8 +49,8 @@ public class LLM {
             return llmResult
         } catch {
             callCatch(error: error, reqId: reqId, cost: cost)
-            print("LLM generate \(error.localizedDescription)")
-            return nil
+            print("LLM generate \(error)")
+            throw error
         }
         
     }
