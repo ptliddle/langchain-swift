@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  DefaultChain.swift
+//
 //
 //  Created by 顾艳华 on 2023/6/19.
 //
@@ -8,8 +8,10 @@
 import Foundation
 
 public class DefaultChain {
+    
     static let CHAIN_REQ_ID_KEY = "chain_req_id"
     static let CHAIN_COST_KEY = "cost"
+    
     public init(memory: BaseMemory? = nil, outputKey: String, inputKey: String, callbacks: [BaseCallbackHandler] = []) {
         self.memory = memory
         self.outputKey = outputKey
@@ -21,10 +23,12 @@ public class DefaultChain {
 //        assert(cbs.count == 1)
         self.callbacks = cbs
     }
+    
     let memory: BaseMemory?
     let inputKey: String
     let outputKey: String
     let callbacks: [BaseCallbackHandler]
+    
     public func _call(args: String) async -> (LLMResult?, Parsed) {
         print("call base.")
         return (LLMResult(), Parsed.unimplemented)
@@ -87,26 +91,17 @@ public class DefaultChain {
     }
     
     func prep_outputs(inputs: [String: String], outputs: [String: String]) -> [String: String] {
-        if self.memory != nil {
-            self.memory!.save_context(inputs: inputs, outputs: outputs)
-        }
-        var m = inputs
-        outputs.forEach { (key, value) in
-            m[key] = value
-        }
-        return m
+        self.memory?.save_context(inputs: inputs, outputs: outputs)
+        return inputs.merging(outputs, uniquingKeysWith: { $1 })
     }
     
     func prep_inputs(inputs: [String: String]) -> [String: String] {
-        if self.memory != nil {
-            var external_context = Dictionary(uniqueKeysWithValues: self.memory!.load_memory_variables(inputs: inputs).map {(key, value) in return (key, value.joined(separator: "\n"))})
-//                    print("ctx: \(external_context)")
-            inputs.forEach { (key, value) in
-                external_context[key] = value
-            }
-            return external_context
-        } else {
+        
+        guard let memory = self.memory else {
             return inputs
         }
+        
+        let externalContext = memory.load_memory_variables(inputs: inputs).mapValues({ $0.joined(separator: "\n") })
+        return externalContext.merging(inputs, uniquingKeysWith: { $1 })
     }
 }
