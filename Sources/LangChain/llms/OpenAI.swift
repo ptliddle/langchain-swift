@@ -65,6 +65,6 @@ public class OpenAI: LLM {
         let openAIClient = try initiateChat(httpClient)
         
         let completion = try await openAIClient.chats.create(model: model, messages: [.user(content: text)], temperature: temperature, stops: stops)
-        return LLMResult(llm_output: completion.choices.first!.message.content)
+        return LLMResult(llm_output: completion.choices.first!.message.content, usage: Usage(completion.usage))
     }
 }

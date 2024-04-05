@@ -20,6 +20,7 @@ public class LLMChain: DefaultChain {
         self.stop = stop
         super.init(memory: memory, outputKey: outputKey, inputKey: inputKey, callbacks: callbacks)
     }
+    
     func create_outputs(output: LLMResult?) -> Parsed {
         if let output = output {
             if let parser = self.parser {
@@ -49,7 +50,7 @@ public class LLMChain: DefaultChain {
         let input_prompt = prep_prompts(input_list: input_list)
         do {
             //call llm
-            let llmResult = await self.llm.generate(text: input_prompt, stops:  stop)
+            let llmResult = try await self.llm.generate(text: input_prompt, stops:  stop)
             try await llmResult?.setOutput()
             return llmResult
         } catch {
@@ -65,6 +66,17 @@ public class LLMChain: DefaultChain {
     
     public func plan(input: String, agent_scratchpad: String) async -> Parsed {
         return await apply(input_list: ["question": input, "thought": agent_scratchpad])
+    }
+    
+    public func predictWithUsage(args: [String: String] ) async -> LLMResult? {
+        let inputAndContext = prep_inputs(inputs: args)
+        let outputs = await self.generate(input_list: inputAndContext)
+        if let o = outputs {
+            let _ = prep_outputs(inputs: args, outputs: [self.outputKey: o.llm_output!])
+            return o
+        } else {
+            return nil
+        }
     }
     
     public func predict(args: [String: String] ) async -> String? {

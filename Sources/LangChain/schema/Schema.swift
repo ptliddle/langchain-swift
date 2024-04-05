@@ -9,15 +9,39 @@ import Foundation
 import OpenAIKit
 // TODO - remove OpenAIKit
 
+public struct Usage {
+    
+    public static let none = Usage(promptTokens: 0, completionTokens: 0, totalTokens: 0)
+    
+    public let promptTokens: Int
+    public let completionTokens: Int
+    public let totalTokens: Int
+    
+    public init(promptTokens: Int, completionTokens: Int, totalTokens: Int) {
+        self.promptTokens = promptTokens
+        self.completionTokens = completionTokens
+        self.totalTokens = totalTokens
+    }
+}
+
+extension Usage {
+    init(_ from: OpenAIKit.Usage) {
+        self.init(promptTokens: from.promptTokens, completionTokens: from.completionTokens ?? 0, totalTokens: from.totalTokens)
+    }
+}
+
 public class LLMResult {
-    init(llm_output: String? = nil, stream: Bool = false) {
+    public init(llm_output: String? = nil, stream: Bool = false, usage: Usage = .none) {
         self.llm_output = llm_output
         self.stream = stream
+        self.usage = usage
     }
     
     public var llm_output: String?
     
     public var stream: Bool
+    
+    public var usage: Usage
     
     public func setOutput() async throws {
         
