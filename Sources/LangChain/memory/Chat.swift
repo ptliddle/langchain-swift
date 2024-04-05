@@ -30,18 +30,22 @@ public class BaseChatMemory: BaseMemory {
 }
 
 public class ConversationBufferWindowMemory: BaseChatMemory {
-    let memory_key = "history"
+    
+    let memoryKey: String
     let k: Int
-    public init(k: Int = 2) {
+    
+    public init(k: Int = 2, memoryKey: String = "chat_history") {
         self.k = k
+        self.memoryKey = memoryKey
     }
+    
     public override func load_memory_variables(inputs: [String: Any]) -> [String: [String]] {
         // Return history buffer.
         
         let buffer = self.chat_memory.messages.suffix(k)
 
         let bufferString = buffer.map{ "\($0.type): \($0.content)" }
-        return [self.memory_key: bufferString]
+        return [self.memoryKey: bufferString]
     }
 }
 
