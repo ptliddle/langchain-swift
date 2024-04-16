@@ -30,10 +30,11 @@ public class BaseConversationalRetrievalChain: DefaultChain {
         ""
     }
     
-    public func predict(args: [String: String] ) async -> (String, String?)? {
-        let new_question = await self.condense_question_chain.predict(args: args)
+    public func predict(args: [String: String] ) async throws -> (String, String?)? {
+        let new_question = try await self.condense_question_chain.predict(args: args)
+        
         if let new_question = new_question {
-            let output = await combineChain.predict(args: ["docs": await self.get_docs(question: new_question), "question": new_question])
+            let output = try await combineChain.predict(args: ["docs": await self.get_docs(question: new_question), "question": new_question])
             if let text = output {
                 let pattern = "Helpful\\s*Answer\\s*:[\\s]*(.*)[\\s]*Dependent\\s*text\\s*:[\\s]*(.*)"
                 let regex = try! NSRegularExpression(pattern: pattern)
@@ -51,6 +52,7 @@ public class BaseConversationalRetrievalChain: DefaultChain {
                 }
             }
         }
+        
         return nil
     }
     

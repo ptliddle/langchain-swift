@@ -111,8 +111,8 @@ public class AgentExecutor: DefaultChain {
 //                    )
 //                result.append((agent_action, observation))
 //            return result
-    func take_next_step(input: String, intermediate_steps: [(AgentAction, String)]) async -> (Parsed, String) {
-        let step = await self.agent.plan(input: input, intermediate_steps: intermediate_steps)
+    func take_next_step(input: String, intermediate_steps: [(AgentAction, String)]) async throws -> (Parsed, String) {
+        let step = try await self.agent.plan(input: input, intermediate_steps: intermediate_steps)
         switch step {
         case .finish(let finish):
             return (step, finish.final)
@@ -134,7 +134,8 @@ public class AgentExecutor: DefaultChain {
             return (step, "fail")
         }
     }
-    public override func _call(args: String) async -> (LLMResult?, Parsed) {
+    
+    public override func _call(args: String) async throws -> (LLMResult?, Parsed) {
         // chain run -> call -> agent plan -> llm send
         
         // while should_continue and call
@@ -156,31 +157,37 @@ public class AgentExecutor: DefaultChain {
 //                intermediate_steps,
 //                run_manager=run_manager,
 //            )
-            let next_step_output = await self.take_next_step(input: args, intermediate_steps: intermediate_steps)
             
-            switch next_step_output.0 {
-            case .finish(let finish):
-                print("Found final answer.")
-                do {
-                for callback in self.callbacks {
-                    try callback.on_agent_finish(action: finish, metadata: [AgentExecutor.AGENT_REQ_ID: reqId])
-                }
-                } catch {
-                    
-                }
-                return (LLMResult(llm_output: next_step_output.1), Parsed.str(next_step_output.1))
-            case .action(let action):
+            do {
+                let next_step_output = try await self.take_next_step(input: args, intermediate_steps: intermediate_steps)
+                
+                switch next_step_output.0 {
+                case .finish(let finish):
+                    print("Found final answer.")
                     do {
-                for callback in self.callbacks {
-                    try callback.on_agent_action(action: action, metadata: [AgentExecutor.AGENT_REQ_ID: reqId])
-                }
+                    for callback in self.callbacks {
+                        try callback.on_agent_finish(action: finish, metadata: [AgentExecutor.AGENT_REQ_ID: reqId])
+                    }
                     } catch {
                         
                     }
-                intermediate_steps.append((action, next_step_output.1))
-            default:
-//                print("error step.")
-                return (nil, Parsed.error)
+                    return (LLMResult(llm_output: next_step_output.1), Parsed.str(next_step_output.1))
+                case .action(let action):
+                        do {
+                    for callback in self.callbacks {
+                        try callback.on_agent_action(action: action, metadata: [AgentExecutor.AGENT_REQ_ID: reqId])
+                    }
+                        } catch {
+                            
+                        }
+                    intermediate_steps.append((action, next_step_output.1))
+                default:
+    //                print("error step.")
+                    return (nil, Parsed.error)
+                }
+            }
+            catch {
+                throw error
             }
         }
     }
@@ -211,7 +218,7 @@ public class Agent {
 //               _output_parser = output_parser or cls._get_default_output_parser()
     }
     
-    public func plan(input: String, intermediate_steps: [(AgentAction, String)]) async -> Parsed {
+    public func plan(input: String, intermediate_steps: [(AgentAction, String)]) async throws -> Parsed {
 //        """Given input, decided what to do.
 //
 //                Args:
@@ -230,7 +237,7 @@ public class Agent {
 //                    **kwargs,
 //                )
 //                return self.output_parser.parse(output)
-        return await llm_chain.plan(input: input, agent_scratchpad: construct_agent_scratchpad(intermediate_steps: intermediate_steps))
+        return try await llm_chain.plan(input: input, agent_scratchpad: construct_agent_scratchpad(intermediate_steps: intermediate_steps))
     }
     
     func construct_agent_scratchpad(intermediate_steps: [(AgentAction, String)]) -> String{

@@ -7,6 +7,16 @@
 
 import Foundation
 
+public enum LLMChainError: Error, CustomStringConvertible {
+    case remote(String)
+    
+    public var description: String {
+        switch self {
+        case .remote(let errorMsg): return errorMsg
+        }
+    }
+}
+
 public class LLMChain: DefaultChain {
     let llm: LLM
     let prompt: PromptTemplate?
@@ -32,13 +42,15 @@ public class LLMChain: DefaultChain {
             return Parsed.error
         }
     }
-    public override func _call(args: String) async -> (LLMResult?, Parsed) {
+    
+    public override func _call(args: String) async throws -> (LLMResult?, Parsed) {
         // ["\\nObservation: ", "\\n\\tObservation: "]
         
-        let llmResult = await generate(input_list: [inputKey: args])
+        let llmResult = try await generate(input_list: [inputKey: args])
         
         return (llmResult, create_outputs(output: llmResult))
     }
+    
     func prep_prompts(input_list: [String: String]) -> String {
         if let prompt = self.prompt {
             return prompt.format(args: input_list)
@@ -46,31 +58,37 @@ public class LLMChain: DefaultChain {
             return input_list.first!.value
         }
     }
-    func generate(input_list: [String: String]) async -> LLMResult? {
+    
+    func generate(input_list: [String: String]) async throws -> LLMResult? {
         let input_prompt = prep_prompts(input_list: input_list)
         do {
             //call llm
             let llmResult = try await self.llm.generate(text: input_prompt, stops:  stop)
             try await llmResult?.setOutput()
             return llmResult
-        } catch {
+        }
+        catch let error as LLMChainError {
+            print("LLM chain generate \(error.description)")
+            throw error
+        }
+        catch {
             print("LLM chain generate \(error.localizedDescription)")
-            return nil
+            throw error
         }
     }
     
-    public func apply(input_list: [String: String]) async -> Parsed {
-        let response = await generate(input_list: input_list)
+    public func apply(input_list: [String: String]) async throws -> Parsed {
+        let response = try await generate(input_list: input_list)
         return create_outputs(output: response)
     }
     
-    public func plan(input: String, agent_scratchpad: String) async -> Parsed {
-        return await apply(input_list: ["question": input, "thought": agent_scratchpad])
+    public func plan(input: String, agent_scratchpad: String) async throws -> Parsed {
+        return try await apply(input_list: ["question": input, "thought": agent_scratchpad])
     }
     
-    public func predictWithUsage(args: [String: String] ) async -> LLMResult? {
+    public func predictWithUsage(args: [String: String] ) async throws -> LLMResult? {
         let inputAndContext = prep_inputs(inputs: args)
-        let outputs = await self.generate(input_list: inputAndContext)
+        let outputs = try await self.generate(input_list: inputAndContext)
         if let o = outputs {
             let _ = prep_outputs(inputs: args, outputs: [self.outputKey: o.llm_output!])
             return o
@@ -79,9 +97,9 @@ public class LLMChain: DefaultChain {
         }
     }
     
-    public func predict(args: [String: String] ) async -> String? {
+    public func predict(args: [String: String] ) async throws -> String? {
         let inputAndContext = prep_inputs(inputs: args)
-        let outputs = await self.generate(input_list: inputAndContext)
+        let outputs = try await self.generate(input_list: inputAndContext)
         if let o = outputs {
             let _ = prep_outputs(inputs: args, outputs: [self.outputKey: o.llm_output!])
             return o.llm_output!
