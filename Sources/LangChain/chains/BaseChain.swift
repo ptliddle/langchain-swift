@@ -29,7 +29,7 @@ public class DefaultChain {
     let outputKey: String
     let callbacks: [BaseCallbackHandler]
     
-    public func _call(args: String) async -> (LLMResult?, Parsed) {
+    public func _call(args: String) async throws -> (LLMResult?, Parsed) {
         print("call base.")
         return (LLMResult(), Parsed.unimplemented)
     }
@@ -65,15 +65,17 @@ public class DefaultChain {
     }
     
     // This interface alreadly return 'LLMReult', ensure 'run' method has stream style.
-    public func run(args: String) async -> Parsed {
+    public func run(args: String) async throws -> Parsed {
         let _ = prep_inputs(inputs: [inputKey: args])
         // = Langchain's run + __call__
         let reqId = UUID().uuidString
         var cost = 0.0
         let now = Date.now.timeIntervalSince1970
+    
+        callStart(prompt: args, reqId: reqId)
         
-            callStart(prompt: args, reqId: reqId)
-        let outputs = await self._call(args: args)
+        let outputs = try await self._call(args: args)
+        
         if let llmResult = outputs.0 {
             cost = Date.now.timeIntervalSince1970 - now
             //call end trace
@@ -84,7 +86,8 @@ public class DefaultChain {
             //            }
             let _ = prep_outputs(inputs: [inputKey: args], outputs: [self.outputKey: llmResult.llm_output!])
             return outputs.1
-        } else {
+        }
+        else {
             callCatch(error: LangChainError.ChainError, reqId: reqId, cost: cost)
             return Parsed.error
         }
