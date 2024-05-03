@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ptliddle/openai-kit.git",
       "state" : {
-        "revision" : "bf4e81668fe3c561afa29078121f3ff7d99da210",
-        "version" : "1.8.2"
+        "branch" : "main",
+        "revision" : "4f62d02c0df127b1eeef8ebfe421d9a11d8fc23e"
       }
     },
     {
@@ -205,6 +205,15 @@
       "state" : {
         "revision" : "ebf8b9c365a6ce043bf6e6326a04b15589bd285e",
         "version" : "1.20.0"
+      }
+    },
+    {
+      "identity" : "swiftanthropic",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jamesrochabrun/SwiftAnthropic.git",
+      "state" : {
+        "revision" : "698d71a56072ee8eb9460b61390ffb4cffbc6b70",
+        "version" : "1.5.0"
       }
     },
     {

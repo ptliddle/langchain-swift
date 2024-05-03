@@ -18,7 +18,7 @@ let package = Package(
             targets: ["LangChain"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ptliddle/openai-kit.git", .upToNextMajor(from: "1.8.2")),
+        .package(url: "https://github.com/ptliddle/openai-kit.git", branch: "main"),
         .package(url: "https://github.com/supabase-community/supabase-swift", .upToNextMajor(from: "0.2.1")),
         .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", .upToNextMajor(from: "5.0.1")),
         .package(url: "https://github.com/drmohundro/SWXMLHash", .upToNextMajor(from: "7.0.2")),
@@ -26,6 +26,7 @@ let package = Package(
         .package(url: "https://github.com/juyan/swift-filestore", .upToNextMajor(from: "0.5.0")),
         .package(url: "https://github.com/ZachNagengast/similarity-search-kit.git", from: "0.0.11"),
         .package(url: "https://github.com/google/generative-ai-swift", .upToNextMajor(from: "0.4.4")),
+        .package(url: "https://github.com/jamesrochabrun/SwiftAnthropic.git", .upToNextMajor(from: "1.4.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -41,6 +42,7 @@ let package = Package(
                 .product(name: "SwiftFileStore", package: "swift-filestore"),
                 .product(name: "SimilaritySearchKit", package: "similarity-search-kit", condition: .when(platforms: [.macOS, .iOS, .visionOS])),
                 .product(name: "GoogleGenerativeAI", package: "generative-ai-swift"),
+                .product(name: "SwiftAnthropic", package: "SwiftAnthropic")
             ]
         
         ),
