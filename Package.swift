@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9.0
+// swift-tools-version: 5.8.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,7 +9,7 @@ let package = Package(
         .iOS(.v15),
         .macOS(.v12),
         .watchOS(.v8),
-        .visionOS(.v1)
+//        .visionOS(.v1)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/juyan/swift-filestore", .upToNextMajor(from: "0.5.0")),
         .package(url: "https://github.com/ZachNagengast/similarity-search-kit.git", from: "0.0.11"),
         .package(url: "https://github.com/google/generative-ai-swift", .upToNextMajor(from: "0.4.4")),
-        .package(url: "https://github.com/jamesrochabrun/SwiftAnthropic.git", .upToNextMajor(from: "1.4.0"))
+        .package(url: "https://github.com/jamesrochabrun/SwiftAnthropic.git", exact: "1.4.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
