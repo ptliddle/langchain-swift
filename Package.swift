@@ -8,8 +8,7 @@ let package = Package(
     platforms: [
         .iOS(.v15),
         .macOS(.v12),
-        .watchOS(.v8),
-        .visionOS(.v1)
+        .watchOS(.v8)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -25,8 +24,7 @@ let package = Package(
         .package(url: "https://github.com/scinfu/SwiftSoup", .upToNextMajor(from: "2.6.1")),
         .package(url: "https://github.com/juyan/swift-filestore", .upToNextMajor(from: "0.5.0")),
         .package(url: "https://github.com/ZachNagengast/similarity-search-kit.git", from: "0.0.11"),
-        .package(url: "https://github.com/google/generative-ai-swift", .upToNextMajor(from: "0.4.4")),
-        .package(url: "https://github.com/ptliddle/SwiftAnthropic.git", branch: "linux-swift5.9")
+        .package(url: "https://github.com/google/generative-ai-swift", .upToNextMajor(from: "0.4.4"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -41,8 +39,7 @@ let package = Package(
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .product(name: "SwiftFileStore", package: "swift-filestore"),
                 .product(name: "SimilaritySearchKit", package: "similarity-search-kit", condition: .when(platforms: [.macOS, .iOS, .visionOS])),
-                .product(name: "GoogleGenerativeAI", package: "generative-ai-swift"),
-                .product(name: "SwiftAnthropic", package: "SwiftAnthropic")
+                .product(name: "GoogleGenerativeAI", package: "generative-ai-swift")
             ]
         
         ),
