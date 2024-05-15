@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/juyan/swift-filestore", .upToNextMajor(from: "0.5.0")),
         .package(url: "https://github.com/ZachNagengast/similarity-search-kit.git", from: "0.0.11"),
         .package(url: "https://github.com/google/generative-ai-swift", .upToNextMajor(from: "0.4.4")),
-        .package(url: "https://github.com/jamesrochabrun/SwiftAnthropic.git", exact: "1.4.0")
+        .package(url: "https://github.com/ptliddle/SwiftAnthropic.git", branch: "linux-swift5.9")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
