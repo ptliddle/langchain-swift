@@ -6,6 +6,9 @@
 //
 import SwiftSoup
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class HtmlLoader: BaseLoader {
     let html: String

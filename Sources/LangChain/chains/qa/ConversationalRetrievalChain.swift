@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class ConversationalRetrievalChain: BaseConversationalRetrievalChain {
     let retriver: BaseRetriever
     public init(retriver: BaseRetriever, llm: LLM) {

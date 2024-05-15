@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class DNChain: DefaultChain {
     public override init(memory: BaseMemory? = nil, outputKey: String = "output", inputKey: String = "input", callbacks: [BaseCallbackHandler] = []) {
         super.init(memory: memory, outputKey: outputKey, inputKey: inputKey, callbacks: callbacks)

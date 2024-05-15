@@ -7,6 +7,9 @@
 
 #if os(macOS) || os(iOS) || os(visionOS) || os(iPadOS)
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import NIOPosix
 import AsyncHTTPClient
 import OpenAIKit

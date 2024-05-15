@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class ParentDocumentRetriever: MultiVectorRetriever {
     public init(child_splitter: TextSplitter, parent_splitter: TextSplitter? = nil, vectorstore: VectorStore, docstore: BaseStore) {
         self.child_splitter = child_splitter

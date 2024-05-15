@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class WikipediaRetriever: BaseRetriever {
     let client = WikipediaAPIWrapper()
     

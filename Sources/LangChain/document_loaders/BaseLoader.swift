@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public struct Document {
     public let page_content: String
     public var metadata: [String: String]

@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 //class WeatherTool(BaseTool):
 //    name = "Weather"
 //    description = "useful for When you want to know about the weather"

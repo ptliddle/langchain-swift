@@ -9,6 +9,9 @@
 
 // https://www.llama-api.com/account/api-token
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import NIOPosix
 import AsyncHTTPClient
 import OpenAIKit

@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 #if os(macOS) || os(iOS) || os(visionOS) || os(iPadOS)
 import PDFKit

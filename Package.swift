@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8.0
+// swift-tools-version: 5.9.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,7 +9,7 @@ let package = Package(
         .iOS(.v15),
         .macOS(.v12),
         .watchOS(.v8),
-//        .visionOS(.v1)
+        .visionOS(.v1)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.

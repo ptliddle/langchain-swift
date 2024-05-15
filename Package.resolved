@@ -64,15 +64,6 @@
       }
     },
     {
-      "identity" : "openai-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ptliddle/openai-kit.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "4f62d02c0df127b1eeef8ebfe421d9a11d8fc23e"
-      }
-    },
-    {
       "identity" : "postgrest-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/postgrest-swift",
@@ -239,8 +230,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jamesrochabrun/SwiftAnthropic.git",
       "state" : {
-        "revision" : "698d71a56072ee8eb9460b61390ffb4cffbc6b70",
-        "version" : "1.5.0"
+        "revision" : "11a8d8f71efae770c1452d36adecd13d7a41d0f7",
+        "version" : "1.4.0"
       }
     },
     {

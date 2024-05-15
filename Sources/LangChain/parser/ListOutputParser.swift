@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public struct ListOutputParser: BaseOutputParser {
     public func parse(text: String) -> Parsed {
         Parsed.list(text.components(separatedBy: ","))

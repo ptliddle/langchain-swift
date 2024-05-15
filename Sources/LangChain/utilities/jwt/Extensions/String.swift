@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 /// Extension for making base64 representations of `Data` safe for
 /// transmitting via URL query parameters
 extension Data {

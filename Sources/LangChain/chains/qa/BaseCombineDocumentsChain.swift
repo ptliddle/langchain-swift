@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class BaseCombineDocumentsChain: DefaultChain {
     public func predict(args: [String: String] ) async throws -> String? {

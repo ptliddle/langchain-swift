@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import NIOPosix
 import AsyncHTTPClient
 // Create ai app on https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application

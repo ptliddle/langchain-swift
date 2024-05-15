@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class ChatGLM: LLM {
     public override func _send(text: String, stops: [String]) async throws -> LLMResult {

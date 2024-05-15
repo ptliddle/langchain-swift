@@ -6,6 +6,9 @@
 //
 import AsyncHTTPClient
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import SwiftyJSON
 import NIOPosix
 

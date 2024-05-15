@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class InMemoryStore: BaseStore {
     var store:[String: String] = [:]
     public override init() {

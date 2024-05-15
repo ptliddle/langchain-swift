@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 //import UIKit
 import AsyncHTTPClient
 import NIOPosix

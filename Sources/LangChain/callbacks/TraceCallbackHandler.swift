@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class TraceCallbackHandler: BaseCallbackHandler {
     func truncate(_ text: String) -> String {

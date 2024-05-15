@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public struct EnumOutputParser<T> : BaseOutputParser where T: RawRepresentable ,T: CaseIterable, T.RawValue == String  {
     public init(enumType: T.Type) {

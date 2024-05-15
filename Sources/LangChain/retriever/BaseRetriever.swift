@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class BaseRetriever {
     public func _get_relevant_documents(query: String) async throws  -> [Document] {

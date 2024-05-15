@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class StdOutCallbackHandler: BaseCallbackHandler {
     public override init() {

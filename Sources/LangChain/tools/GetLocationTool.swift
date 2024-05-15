@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import CoreLocation
 // !! Add "Privacy - Location When In Use Usage Description" to Info.plist
 public class GetLocationTool: BaseTool, CLLocationManagerDelegate {

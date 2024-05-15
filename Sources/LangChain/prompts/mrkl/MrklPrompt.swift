@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 //# flake8: noqa
 public let PREFIX = """
 Answer the following questions as best you can. You have access to the following tools:

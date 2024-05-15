@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class SimpleSequentialChain: DefaultChain {
     let chains: [DefaultChain]

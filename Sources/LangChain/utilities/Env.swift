@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public struct Env {
 //    static var printTrace = true
     static var printTrace = false

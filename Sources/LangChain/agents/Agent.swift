@@ -6,6 +6,11 @@
 //
 
 import Foundation
+
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public class AgentExecutor: DefaultChain {
     static let AGENT_REQ_ID = "agent_req_id"
     let agent: Agent

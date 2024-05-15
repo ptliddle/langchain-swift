@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public class Dummy: BaseTool {
     public override init(callbacks: [BaseCallbackHandler] = []) {

@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class Serper: BaseTool{
     let client = GoogleSerperAPIWrapper()
     let gl: String

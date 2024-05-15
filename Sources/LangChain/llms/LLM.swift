@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 open class LLM {
     static let LLM_REQ_ID_KEY = "llm_req_id"

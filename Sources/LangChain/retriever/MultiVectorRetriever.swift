@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 public class MultiVectorRetriever: BaseRetriever {
     let vectorstore: VectorStore
     let docstore: BaseStore
